@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/lessons"
+        android:title="Занятия"
+        android:icon="@drawable/baseline_calendar_month_24"
+        />
+    <item
+        android:id="@+id/orders"
+        android:title="Заявки"
+        android:icon="@drawable/baseline_check_box_24"
+        />
+    <item
+        android:id="@+id/addBtn"
+        android:title="Добавить"
+        android:icon="@drawable/baseline_add_circle_outline_24"
+        />
+    <item
+        android:id="@+id/messages"
+        android:title="Чат"
+        android:icon="@drawable/baseline_chat_24"
+        />
+    <item
+        android:id="@+id/more"
+        android:title="Еще"
+        android:icon="@drawable/baseline_more_24"
+        />
+</menu>
