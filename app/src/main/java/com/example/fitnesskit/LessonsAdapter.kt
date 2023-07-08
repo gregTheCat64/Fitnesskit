@@ -2,6 +2,7 @@ package com.example.fitnesskit
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnesskit.databinding.LessonItemBinding
 import com.example.fitnesskit.models.Lesson
@@ -39,4 +40,25 @@ class LessonsAdapter: RecyclerView.Adapter<LessonsAdapter.LessonsViewHolder>() {
     class LessonsViewHolder(
         val binding: LessonItemBinding
     ): RecyclerView.ViewHolder(binding.root)
+}
+
+class LessonsDiffUtil(
+    private val oldList: List<Lesson>,
+    private val newList: List<Lesson>
+): DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldList.size
+
+    override fun getNewListSize(): Int = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldLesson = oldList[oldItemPosition]
+        val newLesson = newList[newItemPosition]
+        return oldLesson.appointment_id == newLesson.appointment_id
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldLesson = oldList[oldItemPosition]
+        val newLesson = newList[newItemPosition]
+        return oldLesson == newLesson
+    }
 }
