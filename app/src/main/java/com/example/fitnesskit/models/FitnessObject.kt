@@ -1,8 +1,15 @@
 package com.example.fitnesskit.models
 
+import com.google.gson.annotations.SerializedName
+
 data class FitnessObject(
-    val lessons: List<Lesson>,
+    @SerializedName("lessons")
+    val trainings: List<Training>,
+    @SerializedName("option")
     val option: Option,
+    @SerializedName("tabs")
     val tabs: List<Tab>,
-    val trainers: List<Trainer>
+    @SerializedName("trainers")
+    val coaches: List<Coach>
 )
+

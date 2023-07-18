@@ -2,6 +2,7 @@ package com.example.fitnesskit.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.fitnesskit.R
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding!!.bottomMenu.setupWithNavController(navController)
+
+        Log.i("fitTag","view created" )
     }
 
     override fun onDestroy() {

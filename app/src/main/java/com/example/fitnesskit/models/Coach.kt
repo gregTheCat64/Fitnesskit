@@ -1,6 +1,9 @@
 package com.example.fitnesskit.models
 
-data class Trainer(
+import androidx.room.Entity
+import com.example.fitnesskit.entity.CoachEntity
+
+data class Coach(
     val description: String,
     val full_name: String,
     val id: String,
@@ -10,4 +13,8 @@ data class Trainer(
     val last_name: String,
     val name: String,
     val position: String
+)
+
+fun Coach.toEntity() = CoachEntity(
+    description, full_name, id, image_url, image_url_medium, image_url_small, last_name, name, position
 )
