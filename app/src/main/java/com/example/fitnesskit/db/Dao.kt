@@ -2,6 +2,8 @@ package com.example.fitnesskit.db
 
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,16 +14,18 @@ import com.example.fitnesskit.entity.FitnessObjectEntity
 import com.example.fitnesskit.entity.OptionEntity
 import com.example.fitnesskit.entity.TabsEntity
 import com.example.fitnesskit.entity.TrainingEntity
+import com.example.fitnesskit.entity.TrainingItem
 import com.example.fitnesskit.entity.TrainingWithCoachAndTab
 import com.example.fitnesskit.models.FitnessObject
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface Dao {
 
-    @Transaction
+
     @Query("SELECT * FROM trainings")
-    fun getAllTrainings(): LiveData<List<TrainingWithCoachAndTab>>
+    fun pagingSource(): PagingSource<Int,TrainingItem>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

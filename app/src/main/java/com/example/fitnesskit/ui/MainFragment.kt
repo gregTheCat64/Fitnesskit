@@ -18,11 +18,8 @@ class MainFragment: Fragment(R.layout.fragment_main) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMainBinding.bind(view)
 
-
-
         val adapter = TrainingsAdapter()
         binding.list.adapter = adapter
-
 
 
         viewModel.data.observe(viewLifecycleOwner) {
