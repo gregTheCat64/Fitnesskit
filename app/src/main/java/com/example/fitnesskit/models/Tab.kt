@@ -8,3 +8,5 @@ data class Tab(
 )
 
 fun Tab.toEntity() = TabsEntity(id, name)
+
+fun TabsEntity.toModel() = Tab(id, name)

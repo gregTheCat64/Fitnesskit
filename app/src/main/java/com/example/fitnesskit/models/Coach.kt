@@ -18,3 +18,7 @@ data class Coach(
 fun Coach.toEntity() = CoachEntity(
     description, full_name, id, image_url, image_url_medium, image_url_small, last_name, name, position
 )
+
+fun CoachEntity.toModel() = Coach(
+    description, full_name, id, image_url, image_url_medium, image_url_small, last_name, name, position
+)

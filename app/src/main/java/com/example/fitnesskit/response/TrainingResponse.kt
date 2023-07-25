@@ -1,13 +1,9 @@
-package com.example.fitnesskit.entity
+package com.example.fitnesskit.response
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.example.fitnesskit.entity.TrainingEntity
 import java.time.LocalDate
-import java.time.LocalDateTime
 
-@Entity(tableName = "trainings")
-data class TrainingEntity (
-    @PrimaryKey
+data class TrainingResponse (
     val appointment_id: String,
     val available_slots: Int,
     val client_recorded: Boolean,
@@ -26,3 +22,6 @@ data class TrainingEntity (
     val tab_id: Int
         )
 
+fun TrainingResponse.toEntity() = TrainingEntity(
+    appointment_id, available_slots, client_recorded, coach_id, color, commercial, date, description, endTime, is_cancelled, name, place, service_id, startTime, tab, tab_id
+)

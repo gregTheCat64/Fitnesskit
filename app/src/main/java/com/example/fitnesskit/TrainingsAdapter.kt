@@ -1,52 +1,82 @@
 package com.example.fitnesskit
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fitnesskit.entity.TrainingWithCoachAndTab
+import com.example.fitnesskit.databinding.HeaderItemBinding
+import com.example.fitnesskit.databinding.LessonItemBinding
+import com.example.fitnesskit.models.DateSeparator
+import com.example.fitnesskit.models.TrainingItem
+import com.example.fitnesskit.models.TrainingWithCoachAndTab
+import java.lang.IllegalArgumentException
 
 class TrainingsAdapter :
-    ListAdapter<TrainingWithCoachAndTab, TrainingsAdapter.TrainingsViewHolder>(LessonsDiffCallback()) {
+    PagingDataAdapter<TrainingItem, RecyclerView.ViewHolder>(LessonsDiffCallback()) {
+    private val typeHeader = 0
+    private val typeTraining = 1
 
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)){
+            is TrainingWithCoachAndTab -> typeTraining
+            is DateSeparator -> typeHeader
+            null -> throw IllegalArgumentException("unknown item type: ${getItem(position)}")
+        }
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val viewToInflate = R.layout.lesson_item
-        return TrainingsViewHolder(inflater.inflate(viewToInflate, parent, false))
+
+        return when (viewType){
+            typeTraining -> TrainingsViewHolder(LessonItemBinding.inflate(inflater, parent, false))
+            typeHeader -> HeaderViewHolder(HeaderItemBinding.inflate(inflater, parent, false))
+            else -> throw IllegalArgumentException("unknown view type: $viewType")
+        }
     }
 
 
-    override fun onBindViewHolder(holder: TrainingsViewHolder, position: Int) {
-        val item = getItem(position)
-        with(holder.itemView) {
-            findViewById<TextView>(R.id.lessonTitle).text = item.training?.name
-            findViewById<TextView>(R.id.coachName).text = item.coach?.name
-            findViewById<TextView>(R.id.startTime).text = item.training?.startTime
-            findViewById<TextView>(R.id.endTime).text = item.training?.endTime
-            findViewById<TextView>(R.id.location).text = item.training?.place
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val item = getItem(position)){
+            is DateSeparator -> (holder as HeaderViewHolder).bind(item)
+            is TrainingWithCoachAndTab -> (holder as TrainingsViewHolder).bind(item)
+            else -> throw IllegalArgumentException("unknown view type")
         }
     }
 
     class TrainingsViewHolder(
-        view: View
-    ) : RecyclerView.ViewHolder(view)
+        private val binding: LessonItemBinding
+    ) : RecyclerView.ViewHolder(binding.root){
+        fun bind(training: TrainingWithCoachAndTab){
+            binding.lessonTitle.text = training.training.name
+            binding.coachName.text = training.coach?.name?:"Нет коуча"
+            binding.startTime.text = training.training.startTime
+            binding.endTime.text = training.training.endTime
+            binding.location.text = training.training.place
+        }
+    }
+
+    class HeaderViewHolder(private val binding: HeaderItemBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(separator: DateSeparator){
+            binding.dateTextView.text = separator.date.toString()
+        }
+    }
 }
 
-class LessonsDiffCallback : DiffUtil.ItemCallback<TrainingWithCoachAndTab>() {
+class LessonsDiffCallback : DiffUtil.ItemCallback<TrainingItem>() {
     override fun areItemsTheSame(
-        oldItem: TrainingWithCoachAndTab,
-        newItem: TrainingWithCoachAndTab
+        oldItem: TrainingItem,
+        newItem: TrainingItem
     ): Boolean {
-        return oldItem.training?.appointment_id == newItem.training?.appointment_id
+        return if (oldItem is TrainingWithCoachAndTab && newItem is TrainingWithCoachAndTab)
+            oldItem.training.appointment_id == newItem.training.appointment_id else {
+            oldItem.date == newItem.date
+        }
     }
 
     override fun areContentsTheSame(
-        oldItem: TrainingWithCoachAndTab,
-        newItem: TrainingWithCoachAndTab
+        oldItem: TrainingItem,
+        newItem: TrainingItem
     ): Boolean {
         return oldItem == newItem
     }
