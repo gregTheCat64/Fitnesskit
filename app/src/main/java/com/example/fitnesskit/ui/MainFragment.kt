@@ -15,7 +15,7 @@ class MainFragment: Fragment(R.layout.fragment_main) {
 
     lateinit var binding: FragmentMainBinding
 
-    private val viewModel: TrainingViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    private val viewModel: TrainingViewModel by viewModels {factory()}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

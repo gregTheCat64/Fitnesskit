@@ -19,7 +19,7 @@ import com.example.fitnesskit.entity.TrainingWithCoachAndTabEntity
 interface Dao {
 
     @Transaction
-    @Query("SELECT * FROM trainings ORDER BY date DESC")
+    @Query("SELECT * FROM trainings ORDER BY date")
     fun pagingSource(): PagingSource<Int,TrainingWithCoachAndTabEntity>
 
 

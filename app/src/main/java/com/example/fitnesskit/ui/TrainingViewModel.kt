@@ -25,26 +25,22 @@ import java.lang.Exception
 import java.time.LocalDate
 import kotlin.random.Random
 
-class TrainingViewModel(application: Application) : AndroidViewModel(application) {
+class TrainingViewModel(application: Application) : ViewModel() {
     private val repository: Repository =
         RepositoryImpl(AppDb.getInstance(context = application).dao())
 
     val data: Flow<PagingData<TrainingItem>> = repository
         .data
         .map {
-            it.insertSeparators { after, before ->
-                if (after == null || before == null){
-                    return@insertSeparators null
+            it.insertSeparators { before, after ->
+                if (after != null && (before == null
+                            || before.training.date != after.training.date)){
+                     DateSeparator(after.training.date)
+                    } else {
+                        return@insertSeparators null
                 }
-                val afterDate = after.training.date
-                val beforeDate = before.training.date
-                if (afterDate > beforeDate){
-                    DateSeparator(afterDate)
-                } else null
             }
         }
-
-
 
     init {
         println("init VM")

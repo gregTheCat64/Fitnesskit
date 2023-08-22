@@ -7,4 +7,4 @@ import java.time.format.DateTimeFormatter
 fun String.toLocalDate(): LocalDate = LocalDate.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
 
-fun LocalDate.asString(): String = format(DateTimeFormatter.ofPattern("dd MMMM"))
+fun LocalDate.asString(): String = format(DateTimeFormatter.ofPattern("EEEE, dd MMMM"))

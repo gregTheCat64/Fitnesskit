@@ -1,5 +1,6 @@
 package com.example.fitnesskit
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -10,6 +11,7 @@ import com.example.fitnesskit.databinding.LessonItemBinding
 import com.example.fitnesskit.models.DateSeparator
 import com.example.fitnesskit.models.TrainingItem
 import com.example.fitnesskit.models.TrainingWithCoachAndTab
+import com.example.fitnesskit.utils.asString
 import java.lang.IllegalArgumentException
 
 class TrainingsAdapter :
@@ -49,16 +51,18 @@ class TrainingsAdapter :
     ) : RecyclerView.ViewHolder(binding.root){
         fun bind(training: TrainingWithCoachAndTab){
             binding.lessonTitle.text = training.training.name
-            binding.coachName.text = training.coach?.name?:"Нет коуча"
+            binding.coachName.text = training.coach?.name?:"Без тренера"
             binding.startTime.text = training.training.startTime
             binding.endTime.text = training.training.endTime
             binding.location.text = training.training.place
+            binding.dateOfTraining.text = training.training.date.asString()
+            binding.categoryLine.setBackgroundColor(Color.parseColor(training.training.color))
         }
     }
 
     class HeaderViewHolder(private val binding: HeaderItemBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(separator: DateSeparator){
-            binding.dateTextView.text = separator.date.toString()
+            binding.dateTextView.text = separator.date.asString()
         }
     }
 }
